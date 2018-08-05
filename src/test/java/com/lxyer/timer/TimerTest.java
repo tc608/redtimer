@@ -1,5 +1,6 @@
 package com.lxyer.timer;
 
+import com.lxyer.timer.scheduled.ScheduledExpres;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
@@ -21,7 +22,7 @@ public class TimerTest {
     public void t2(){
         TimerExecutor timerExecutor = new TimerExecutor(1);
 
-        timerExecutor.add(new Task("a1", "1-40 * * * *") {
+        timerExecutor.add(new TaskImpl("a1", new ScheduledExpres(LocalDateTime.now(), "1-40 * * * *")) {
             @Override
             public void run() {
                 ThreadLocal<SimpleDateFormat> local = new ThreadLocal<>();
@@ -133,54 +134,19 @@ public class TimerTest {
     }
 
     /**
-     * LocalDateTime的一些api测试
-     */
-    @Test
-    public void t5(){
-        //Minute *  1,3  1-3  */5  3-15/5
-        String cfg = "* * * * *";
-        LocalDateTime time = LocalDateTime.of(2018, 7, 18, 11, 11);
-
-        int minute = time.getMinute();
-        int hour = time.getHour();
-        int day = time.getDayOfMonth();
-        int month = time.getMonthValue();
-        int week = time.getDayOfWeek().getValue();
-
-        //checkCfg
-        //if (month)
-        System.out.println(week);
-    }
-
-    /**
      * 测试配置的表达式
      */
     @Test
     public void t6(){
         //分 时 日 月 周
+        TimerExecutor executor = new TimerExecutor(10);
+
         /*
         08 18 * 7,8 4
+        "task1", "1 22-23 * * 7"
          */
-        new Task("task1", "1 22-23 * * 7") {
-            @Override
-            public void run() {
-                System.out.println("----");
-                System.out.println(new SimpleDateFormat("0: yyyy-MM-dd HH:mm:ss").format(nextTime));
-                System.out.println(new SimpleDateFormat("1: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("2: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("3: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("4: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("5: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("6: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("7: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("8: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("9: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("10: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("11: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("12: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("13: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-            }
-        }.run();
+        Task task = new TaskImpl("task1", new ScheduledExpres("1 22-23 * * 7"));
+        task.run();
 
     }
 }
