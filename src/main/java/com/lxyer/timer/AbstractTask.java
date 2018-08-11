@@ -20,6 +20,11 @@ public abstract class AbstractTask implements Task {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
     public long nextTime(){
         LocalDateTime next = scheduled.nextTime();
         this.theTime = next.toInstant(ZoneOffset.of("+8")).toEpochMilli();

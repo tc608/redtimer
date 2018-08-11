@@ -9,12 +9,12 @@ import java.util.Set;
  */
 class TimerQueue{
     Object lock = new Object();
-    AbstractTask[] queue = new AbstractTask[128];
+    Task[] queue = new Task[128];
     Set<String> names = new HashSet<>();
     int size=0;
 
-    void put(AbstractTask task) {
-        remove(task.name);
+    void put(Task task) {
+        remove(task.getName());
         synchronized (lock){
             int inx = size;//目标坐标
             while (inx > 0 && queue[inx-1].theTime() > task.theTime()){
@@ -31,12 +31,12 @@ class TimerQueue{
             queue[inx] = task;
 
             size++;
-            names.add(task.name);
+            names.add(task.getName());
             lock.notify();
         }
     }
 
-    AbstractTask take() throws InterruptedException {
+    Task take() throws InterruptedException {
         synchronized (lock){
             if (size == 0) lock.wait();
 
@@ -44,7 +44,7 @@ class TimerQueue{
             long nextTime = queue[0].theTime();
 
             if (currentTime >= nextTime){
-                AbstractTask task = queue[0];
+                Task task = queue[0];
                 for (int i = 0; i < size;i++) {
                     queue[i] = queue[i+1];
                 }
@@ -58,13 +58,13 @@ class TimerQueue{
         }
     }
 
-    AbstractTask remove(String name){
+    Task remove(String name){
         synchronized (lock){
             if(!names.contains(name)) return null;
 
-            AbstractTask take = null;
+            Task take = null;
             for (int i = 0; i < size-1; i++) {
-                if (name.equals(queue[i].name)){
+                if (name.equals(queue[i].getName())){
                     take = queue[i];
                     while (i < size+1){
                         queue[i] = queue[i+1];

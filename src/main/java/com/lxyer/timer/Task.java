@@ -5,6 +5,8 @@ package com.lxyer.timer;
  */
 public interface Task extends Runnable{
 
+    String getName();
     long nextTime();
     long theTime();
+    void run();
 }

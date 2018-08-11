@@ -9,7 +9,7 @@ redtimer是本人纯手工精心编写的一个任务定时调度器，
 项目地址：[https://gitee.com/tc608/redtimer](https://gitee.com/tc608/redtimer)
 
 #### 软件架构
-里面的东西很简单，没什么架构而言
+![](http://img.1216.top/redbbs/20180811122309.png)
 
 
 #### 安装使用教程

@@ -14,10 +14,10 @@ public class TimerExecutor {
         executor = Executors.newFixedThreadPool(n);
     }
 
-    public void add(AbstractTask task){
+    public void add(Task task){
         queue.put(task);
     }
-    private void add(AbstractTask task, boolean upTime){
+    private void add(Task task, boolean upTime){
         if (upTime) task.nextTime();
         queue.put(task);
     }
@@ -27,7 +27,7 @@ public class TimerExecutor {
         new Thread(()->{
             while (true){
                 try{
-                    AbstractTask take = null;
+                    Task take = null;
                     try {
                         take = queue.take();
                     } catch (InterruptedException e) {
