@@ -7,6 +7,7 @@ import java.util.Set;
 /**
  * Created by liangxianyou at 2018/7/23 14:07.
  */
+@SuppressWarnings("Duplicates")
 class TimerQueue{
     Object lock = new Object();
     Task[] queue = new Task[128];
@@ -26,7 +27,6 @@ class TimerQueue{
 
             for (int i = size+1; i > inx; i--) {
                 queue[i] = queue[i-1];
-                queue[i-1] = null;
             }
             queue[inx] = task;
 
@@ -38,7 +38,7 @@ class TimerQueue{
 
     Task take() throws InterruptedException {
         synchronized (lock){
-            if (size == 0) lock.wait();
+            while (size == 0) lock.wait(10);//循环避免非put线程唤醒空异常
 
             long currentTime = System.currentTimeMillis();
             long nextTime = queue[0].theTime();
@@ -59,21 +59,33 @@ class TimerQueue{
     }
 
     Task remove(String name){
+        return get(name, true);
+    }
+
+    Task get(String name){
+        return get(name, false);
+    }
+
+    private Task get(String name, boolean remove) {
         synchronized (lock){
             if(!names.contains(name)) return null;
 
             Task take = null;
-            for (int i = 0; i < size-1; i++) {
+            for (int i = 0; i < size; i++) {
                 if (name.equals(queue[i].getName())){
                     take = queue[i];
+                    if (!remove) break;
                     while (i < size+1){
                         queue[i] = queue[i+1];
                         queue[i+1] = null;
+                        i++;
                     }
                     names.remove(name);
+                    size--;
                     break;
                 }
             }
+            lock.notify();
             return take;
         }
     }

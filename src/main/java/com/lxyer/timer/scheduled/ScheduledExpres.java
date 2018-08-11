@@ -21,24 +21,27 @@ public class ScheduledExpres implements Scheduled{
     private int[] days;
     private int[] monthes;
     private int[] weeks;
-    private String[] cfgArr;
 
+    private String cfg;
+    private String[] cfgArr;
     private LocalDateTime theTime;
     private int _y,_M,_d,_H,_m;
 
     public ScheduledExpres(String cfg){
+        this.cfg = cfg;
         this.theTime = LocalDateTime.now();
-        initTheTime(cfg);
+        initTheTime();
     }
 
     public ScheduledExpres(final LocalDateTime startTime, String cfg){
         LocalDateTime now = LocalDateTime.now();
         this.theTime = now.isAfter(startTime)? now : startTime;
-        initTheTime(cfg);
+        this.cfg = cfg;
+        initTheTime();
     }
 
     //寻找初始合法时间
-    public void initTheTime( String cfg) {
+    public void initTheTime() {
         year = theTime.getYear();
         month = theTime.getMonthValue();
         cfgArr = cfg.split(" ");
@@ -103,7 +106,7 @@ public class ScheduledExpres implements Scheduled{
      */
     @Override
     public LocalDateTime nextTime(){
-        return carry("m");
+        return theTime = carry("m");
     }
 
     @Override

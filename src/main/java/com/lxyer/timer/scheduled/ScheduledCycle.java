@@ -11,7 +11,18 @@ public class ScheduledCycle implements Scheduled {
 
     private LocalDateTime theTime;
     private long period;
-    private TemporalUnit unit = ChronoUnit.SECONDS;
+    private TemporalUnit unit = ChronoUnit.MILLIS;
+
+
+    public ScheduledCycle(long period) {
+        this.theTime = LocalDateTime.now();
+        this.period = period;
+    }
+    public ScheduledCycle(long period,TemporalUnit unit) {
+        this.theTime = LocalDateTime.now();
+        this.period = period;
+        this.unit = unit;
+    }
 
     public ScheduledCycle(LocalDateTime startTime, long period) {
         this.theTime = startTime;
@@ -25,7 +36,7 @@ public class ScheduledCycle implements Scheduled {
 
     @Override
     public LocalDateTime nextTime() {
-        return theTime.plus(period, unit);
+        return theTime = theTime.plus(period, unit);
     }
 
     @Override

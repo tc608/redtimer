@@ -1,5 +1,6 @@
 package com.lxyer.timer;
 
+import com.lxyer.timer.scheduled.ScheduledCycle;
 import com.lxyer.timer.scheduled.ScheduledExpres;
 import org.junit.Test;
 
@@ -19,16 +20,24 @@ public class TimerTest {
      * 启动定时器测试，
      */
     @Test
-    public void t2(){
+    public void t2() throws InterruptedException {
         TimerExecutor timerExecutor = new TimerExecutor(1);
-        timerExecutor.add(new TaskImpl("a1", new ScheduledExpres(LocalDateTime.now(), "1-40/2 * * * *")));//1-40，定时每分钟执行
-        timerExecutor.start();
+        Task t1 = new TaskImpl("a1", new ScheduledExpres("1-40 * * * *"));//1-40，定时每分钟执行
+        TaskImpl t2 = new TaskImpl("a2", new ScheduledCycle(5000 * 1));
 
-        try {
-            Thread.sleep(1500_000000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        timerExecutor.add(t1, t2);
+
+        //60s后修改a1 每2s执行一次
+        Thread.sleep(1000 * 60);
+        //task = timerExecutor.get("a1");
+        if (t1 != null){
+            t1.setScheduled(new ScheduledCycle(2000 * 1));
+            timerExecutor.add(t1);
         }
+
+
+        Thread.sleep(1500_000000);
     }
 
     /**
@@ -133,7 +142,28 @@ public class TimerTest {
         08 18 * 7,8 4
         "task1", "1 22-23 * * 7"
          */
-        Task task = new TaskImpl("task1", new ScheduledExpres("1 22-23 * * 7"));
+        Task task = new TaskImpl("task1", new ScheduledExpres("1 22-23 * * 7")){
+            @Override
+            public void run() {
+                System.out.println("----");
+                System.out.println(new SimpleDateFormat("0: yyyy-MM-dd HH:mm:ss").format(theTime()));
+                System.out.println(new SimpleDateFormat("1: yyyy-MM-dd HH:mm:ss").format(nextTime()));
+                System.out.println(new SimpleDateFormat("2: yyyy-MM-dd HH:mm:ss").format(nextTime()));
+                /*System.out.println(new SimpleDateFormat("3: yyyy-MM-dd HH:mm:ss").format(nextTime()));
+                System.out.println(new SimpleDateFormat("4: yyyy-MM-dd HH:mm:ss").format(nextTime()));
+                System.out.println(new SimpleDateFormat("5: yyyy-MM-dd HH:mm:ss").format(nextTime()));
+                System.out.println(new SimpleDateFormat("6: yyyy-MM-dd HH:mm:ss").format(nextTime()));
+                System.out.println(new SimpleDateFormat("7: yyyy-MM-dd HH:mm:ss").format(nextTime()));
+                System.out.println(new SimpleDateFormat("8: yyyy-MM-dd HH:mm:ss").format(nextTime()));
+                System.out.println(new SimpleDateFormat("9: yyyy-MM-dd HH:mm:ss").format(nextTime()));
+                System.out.println(new SimpleDateFormat("10: yyyy-MM-dd HH:mm:ss").format(nextTime()));
+                System.out.println(new SimpleDateFormat("11: yyyy-MM-dd HH:mm:ss").format(nextTime()));
+                System.out.println(new SimpleDateFormat("12: yyyy-MM-dd HH:mm:ss").format(nextTime()));
+                System.out.println(new SimpleDateFormat("13: yyyy-MM-dd HH:mm:ss").format(nextTime()));*/
+            }
+        };
+        task.run();
+        task.setScheduled(new ScheduledCycle(1000 * 5));//定时每秒执行
         task.run();
 
     }

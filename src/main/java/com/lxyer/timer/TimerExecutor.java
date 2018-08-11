@@ -12,14 +12,24 @@ public class TimerExecutor {
 
     public TimerExecutor(int n) {
         executor = Executors.newFixedThreadPool(n);
+        start();
     }
 
-    public void add(Task task){
-        queue.put(task);
+    public void add(Task ... task){
+        for (Task t : task) {
+            queue.put(t);
+        }
     }
     private void add(Task task, boolean upTime){
         if (upTime) task.nextTime();
         queue.put(task);
+    }
+
+    public Task remove(String name){
+        return queue.remove(name);
+    }
+    public Task get(String name){
+        return queue.get(name);
     }
 
 

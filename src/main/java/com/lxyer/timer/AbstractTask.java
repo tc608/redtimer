@@ -25,6 +25,12 @@ public abstract class AbstractTask implements Task {
     }
 
     @Override
+    public void setScheduled(Scheduled scheduled) {
+        this.scheduled = scheduled;
+        this.theTime = scheduled.theTime().toInstant(ZoneOffset.of("+8")).toEpochMilli();
+    }
+
+    @Override
     public long nextTime(){
         LocalDateTime next = scheduled.nextTime();
         this.theTime = next.toInstant(ZoneOffset.of("+8")).toEpochMilli();
@@ -35,6 +41,8 @@ public abstract class AbstractTask implements Task {
     }
     @Override
     public long theTime(){
+        LocalDateTime next = scheduled.theTime();
+        this.theTime = next.toInstant(ZoneOffset.of("+8")).toEpochMilli();
         return theTime;
     }
 }
