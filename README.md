@@ -13,9 +13,12 @@ redtimer是本人纯手工精心编写的一个任务定时调度器，
 
 
 #### 安装使用教程
-
+```
+TimerExecutor timerExecutor = new TimerExecutor(1);
+timerExecutor.add(new TaskImpl("a1", new ScheduledExpres("0 2 * * *"));//定时每天2点执行
+timerExecutor.start();
 请看测试案例，以及阅读详细源码，所有的代码也就几百行；
-
+```
 #### 参与贡献
 你可以做这些
 1. Fork 本项目

@@ -21,19 +21,7 @@ public class TimerTest {
     @Test
     public void t2(){
         TimerExecutor timerExecutor = new TimerExecutor(1);
-
-        timerExecutor.add(new TaskImpl("a1", new ScheduledExpres(LocalDateTime.now(), "1-40 * * * *")) {
-            @Override
-            public void run() {
-                ThreadLocal<SimpleDateFormat> local = new ThreadLocal<>();
-                SimpleDateFormat sdf = local.get();
-                if (sdf == null){
-                    sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                }
-                System.out.printf("执行任务:%s now:%s, %n", name, sdf.format(System.currentTimeMillis()));
-            }
-        });
-
+        timerExecutor.add(new TaskImpl("a1", new ScheduledExpres(LocalDateTime.now(), "1-40/2 * * * *")));//1-40，定时每分钟执行
         timerExecutor.start();
 
         try {

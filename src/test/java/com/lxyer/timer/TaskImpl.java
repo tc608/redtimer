@@ -15,20 +15,11 @@ public class TaskImpl extends AbstractTask {
 
     @Override
     public void run() {
-        System.out.println("----");
-        System.out.println(new SimpleDateFormat("0: yyyy-MM-dd HH:mm:ss").format(theTime()));
-        System.out.println(new SimpleDateFormat("1: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-        System.out.println(new SimpleDateFormat("2: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-        System.out.println(new SimpleDateFormat("3: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-        System.out.println(new SimpleDateFormat("4: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-        System.out.println(new SimpleDateFormat("5: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-        System.out.println(new SimpleDateFormat("6: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-        System.out.println(new SimpleDateFormat("7: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-        System.out.println(new SimpleDateFormat("8: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-        System.out.println(new SimpleDateFormat("9: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-        System.out.println(new SimpleDateFormat("10: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-        System.out.println(new SimpleDateFormat("11: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-        System.out.println(new SimpleDateFormat("12: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-        System.out.println(new SimpleDateFormat("13: yyyy-MM-dd HH:mm:ss").format(nextTime()));
+        ThreadLocal<SimpleDateFormat> local = new ThreadLocal<>();
+        SimpleDateFormat sdf = local.get();
+        if (sdf == null){
+            sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        }
+        System.out.printf("执行任务:%s now:%s, %n", name, sdf.format(System.currentTimeMillis()));
     }
 }
