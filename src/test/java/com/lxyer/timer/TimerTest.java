@@ -29,7 +29,7 @@ public class TimerTest {
         timerExecutor.add(t1, t2);
 
         //60s后修改a1 每2s执行一次
-        Thread.sleep(1000 * 60);
+        Thread.sleep(1000);
         //task = timerExecutor.get("a1");
         if (t1 != null){
             t1.setScheduled(new ScheduledCycle(2000 * 1));
@@ -37,7 +37,7 @@ public class TimerTest {
         }
 
 
-        Thread.sleep(1500_000000);
+        Thread.sleep(5000);
     }
 
     /**
