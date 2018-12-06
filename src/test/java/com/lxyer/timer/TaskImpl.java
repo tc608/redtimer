@@ -22,4 +22,9 @@ public class TaskImpl extends AbstractTask {
         }
         System.out.printf("执行任务:%s now:%s, %n", name, sdf.format(System.currentTimeMillis()));
     }
+
+    @Override
+    public long startTime() {
+        return 0;
+    }
 }

@@ -38,4 +38,16 @@ public interface Task extends Runnable{
      * 执行任务
      */
     void run();
+
+    /**
+     * 是否完成
+     * @return
+     */
+    boolean isComplete();
+
+    /**
+     * 开始时间（创建时间）
+     * @return
+     */
+    long startTime();
 }

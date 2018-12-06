@@ -12,6 +12,8 @@ public abstract class AbstractTask implements Task {
     protected String name;
     private long theTime;
     private Scheduled scheduled;
+    private boolean isComplete;
+    private long startTime = System.currentTimeMillis();
 
     public AbstractTask(String name, Scheduled scheduled) {
         this.name = name;
@@ -44,6 +46,19 @@ public abstract class AbstractTask implements Task {
         LocalDateTime next = scheduled.theTime();
         this.theTime = next.toInstant(ZoneOffset.of("+8")).toEpochMilli();
         return theTime;
+    }
+
+    @Override
+    public boolean isComplete() {
+        return isComplete;
+    }
+
+    public void setComplete(boolean complete) {
+        isComplete = complete;
+    }
+
+    public long startTime() {
+        return startTime;
     }
 }
 
