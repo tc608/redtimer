@@ -2,6 +2,7 @@ package com.lxyer.timer;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.BiConsumer;
 
 /**
  * @author: liangxianyou
@@ -17,10 +18,13 @@ public class TimerExecutor {
 
     public void add(Task ... task){
         for (Task t : task) {
+            t.setTimerExecutor(this);
             queue.put(t);
         }
     }
+
     private void add(Task task, boolean upTime){
+        task.setTimerExecutor(this);
         if (upTime) task.nextTime();
         queue.put(task);
     }

@@ -22,19 +22,22 @@ public class TimerTest {
     @Test
     public void t2() throws InterruptedException {
         TimerExecutor timerExecutor = new TimerExecutor(1);
-        Task t1 = new TaskImpl("a1", new ScheduledExpres("1-40 * * * *"));//1-40，定时每分钟执行
+        //Task t1 = new TaskImpl("a1", new ScheduledExpres("1-40 * * * *"));//1-40，定时每分钟执行
         TaskImpl t2 = new TaskImpl("a2", new ScheduledCycle(5000 * 1));
 
 
-        timerExecutor.add(t1, t2);
+
+        //timerExecutor.add(t2);
 
         //60s后修改a1 每2s执行一次
-        Thread.sleep(1000);
+        //Thread.sleep(1000);
         //task = timerExecutor.get("a1");
-        if (t1 != null){
+        /*if (t1 != null){
             t1.setScheduled(new ScheduledCycle(2000 * 1));
             timerExecutor.add(t1);
-        }
+        }*/
+
+
 
 
         Thread.sleep(5000);

@@ -50,4 +50,8 @@ public interface Task extends Runnable{
      * @return
      */
     long startTime();
+
+    TimerExecutor getTimerExecutor();
+
+    void setTimerExecutor(TimerExecutor timerExecutor);
 }

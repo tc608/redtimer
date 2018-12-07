@@ -15,6 +15,8 @@ public abstract class AbstractTask implements Task {
     private boolean isComplete;
     private long startTime = System.currentTimeMillis();
 
+    private TimerExecutor timerExecutor;
+
     public AbstractTask(String name, Scheduled scheduled) {
         this.name = name;
         this.scheduled = scheduled;
@@ -55,6 +57,15 @@ public abstract class AbstractTask implements Task {
 
     public void setComplete(boolean complete) {
         isComplete = complete;
+        timerExecutor.remove(name);
+    }
+
+    public TimerExecutor getTimerExecutor() {
+        return timerExecutor;
+    }
+
+    public void setTimerExecutor(TimerExecutor timerExecutor) {
+        this.timerExecutor = timerExecutor;
     }
 
     public long startTime() {
