@@ -1,4 +1,6 @@
-package com.lxyer.timer;
+package com.lxyer.timer.queue;
+
+import com.lxyer.timer.task.Task;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -7,14 +9,17 @@ import java.util.Set;
 /**
  * Created by liangxianyou at 2018/7/23 14:07.
  */
-@SuppressWarnings("Duplicates")
-class TimerQueue{
+public class TimerQueue{
     Object lock = new Object();
     Task[] queue = new Task[128];
     Set<String> names = new HashSet<>();
     int size=0;
 
-    void put(Task task) {
+    /**
+     * 新加调度任务
+     * @param task
+     */
+    public void push(Task task) {
         remove(task.getName());
         synchronized (lock){
             int inx = size;//目标坐标
@@ -36,7 +41,12 @@ class TimerQueue{
         }
     }
 
-    Task take() throws InterruptedException {
+    /**
+     * 调度等待执行的任务
+     * @return
+     * @throws InterruptedException
+     */
+    public Task take() throws InterruptedException {
         synchronized (lock){
             while (size == 0) lock.wait(10);//循环避免非put线程唤醒空异常
 
@@ -58,11 +68,21 @@ class TimerQueue{
         }
     }
 
-    Task remove(String name){
+    /**
+     * 删除指定名称的任务
+     * @param name
+     * @return
+     */
+    public Task remove(String name){
         return get(name, true);
     }
 
-    Task get(String name){
+    /**
+     * 返回指定名称的任务
+     * @param name
+     * @return
+     */
+    public Task get(String name){
         return get(name, false);
     }
 

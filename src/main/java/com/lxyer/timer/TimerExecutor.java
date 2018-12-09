@@ -1,13 +1,18 @@
 package com.lxyer.timer;
 
+import com.lxyer.timer.queue.TimerQueue;
+import com.lxyer.timer.task.Task;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.BiConsumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author: liangxianyou
  */
 public class TimerExecutor {
+    private Logger logger = Logger.getLogger(this.getClass().getSimpleName());
     private TimerQueue queue = new TimerQueue();
     private ExecutorService executor;
 
@@ -19,14 +24,15 @@ public class TimerExecutor {
     public void add(Task ... task){
         for (Task t : task) {
             t.setTimerExecutor(this);
-            queue.put(t);
+            queue.push(t);
+            logger.log(Level.INFO, "add new task : " + t.getName());
         }
     }
 
-    private void add(Task task, boolean upTime){
+    protected void add(Task task, boolean upTime){
         task.setTimerExecutor(this);
         if (upTime) task.nextTime();
-        queue.put(task);
+        queue.push(task);
     }
 
     public Task remove(String name){
@@ -50,7 +56,7 @@ public class TimerExecutor {
 
                     //执行调度
                     executor.execute(take);
-                    add(take, true);
+                    //add(take, true); //继续添加任务到 队列
                 }catch (Exception e){
                     e.printStackTrace();
                 }

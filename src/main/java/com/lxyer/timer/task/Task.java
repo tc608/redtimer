@@ -1,11 +1,12 @@
-package com.lxyer.timer;
+package com.lxyer.timer.task;
 
+import com.lxyer.timer.TimerExecutor;
 import com.lxyer.timer.scheduled.Scheduled;
 
 /**
  * @author: liangxianyou at 2018/8/5 19:32.
  */
-public interface Task extends Runnable{
+public interface Task extends Runnable {
 
     /**
      * 得到任务名称
@@ -33,11 +34,6 @@ public interface Task extends Runnable{
      * @return
      */
     long theTime();
-
-    /**
-     * 执行任务
-     */
-    void run();
 
     /**
      * 是否完成

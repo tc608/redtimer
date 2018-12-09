@@ -1,26 +1,34 @@
 package com.lxyer.timer;
 
 import com.lxyer.timer.scheduled.Scheduled;
+import com.lxyer.timer.task.Job;
+import com.lxyer.timer.task.Task;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by liangxianyou at 2018/7/23 14:33.
  */
-public abstract class AbstractTask implements Task {
+public class TimerTask implements Task {
+    private Logger logger = Logger.getLogger(this.getClass().getSimpleName());
+    private long startTime = System.currentTimeMillis();
     protected String name;
     private long theTime;
     private Scheduled scheduled;
     private boolean isComplete;
-    private long startTime = System.currentTimeMillis();
 
     private TimerExecutor timerExecutor;
+    private Job job;
 
-    public AbstractTask(String name, Scheduled scheduled) {
-        this.name = name;
-        this.scheduled = scheduled;
-        this.theTime = scheduled.theTime().toInstant(ZoneOffset.of("+8")).toEpochMilli();
+    public static Task by(String name, Scheduled scheduled, Job job) {
+        TimerTask task = new TimerTask();
+        task.name = name;
+        task.scheduled = scheduled;
+        task.job = job;
+        return task;
     }
 
     @Override
@@ -70,6 +78,26 @@ public abstract class AbstractTask implements Task {
 
     public long startTime() {
         return startTime;
+    }
+
+    @Override
+    public void run() {
+        //没有完成任务，继续执行，返回true,表示完成
+        if (!isComplete) {
+            long start = System.currentTimeMillis();
+            StringBuilder buf = new StringBuilder();
+            buf.append("task [" + getName() + "] : ").append("not complete -> ");
+            long end;
+            if (!(isComplete = job.execute())) {
+                end = System.currentTimeMillis();
+                timerExecutor.add(this, true);
+            } else {
+                end = System.currentTimeMillis();
+            }
+
+            logger.log(Level.INFO, buf.append(isComplete ? "had complete" : "not complete;").append("time: ").append(end - start).append(" ms").toString());
+        }
+
     }
 }
 

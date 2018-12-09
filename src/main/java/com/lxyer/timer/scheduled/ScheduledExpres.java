@@ -26,18 +26,25 @@ public class ScheduledExpres implements Scheduled{
     private String[] cfgArr;
     private LocalDateTime theTime;
     private int _y,_M,_d,_H,_m;
-
-    public ScheduledExpres(String cfg){
+    @Deprecated
+    private ScheduledExpres(String cfg){
         this.cfg = cfg;
         this.theTime = LocalDateTime.now();
         initTheTime();
     }
 
-    public ScheduledExpres(final LocalDateTime startTime, String cfg){
+    @Deprecated
+    private ScheduledExpres(final LocalDateTime startTime, String cfg){
         LocalDateTime now = LocalDateTime.now();
         this.theTime = now.isAfter(startTime)? now : startTime;
         this.cfg = cfg;
         initTheTime();
+    }
+    public static Scheduled of(String cfg) {
+        return new ScheduledExpres(cfg);
+    }
+    public static Scheduled of(final LocalDateTime startTime, String cfg) {
+        return new ScheduledExpres(startTime, cfg);
     }
 
     //寻找初始合法时间
