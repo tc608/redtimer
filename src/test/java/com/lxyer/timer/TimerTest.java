@@ -24,10 +24,9 @@ public class TimerTest {
         TimerExecutor timerExecutor = new TimerExecutor(1);
         //Task t1 = new TaskImpl("a1", new ScheduledExpres("1-40 * * * *"));//1-40，定时每分钟执行
         //TaskImpl t2 = new TaskImpl("a2", ScheduledCycle.of(5000 * 1));
-        Task task = TimerTask.by("A2", ScheduledCycle.of(1000 * 1), () -> {
+        Task task = TimerTask.by("A2", ScheduledCycle.of(1000 * 1), (t) -> {
             System.out.println("xxxx");
 
-            return false;// false 继续执行， true结束任务
         });
 
 
@@ -149,7 +148,7 @@ public class TimerTest {
         08 18 * 7,8 4
         "task1", "1 22-23 * * 7"
          */
-        Task task = TimerTask.by("task1", ScheduledExpres.of("1 22-23 * * 7"), () -> {
+        Task task = TimerTask.by("task1", ScheduledExpres.of("1 22-23 * * 7"), (t) -> {
 
             //System.out.println("");
 
@@ -169,7 +168,6 @@ public class TimerTest {
                 System.out.println(new SimpleDateFormat("12: yyyy-MM-dd HH:mm:ss").format(nextTime()));
                 System.out.println(new SimpleDateFormat("13: yyyy-MM-dd HH:mm:ss").format(nextTime()));*/
 
-            return true;
         });
         task.run();
         task.setScheduled(ScheduledCycle.of(1000 * 5));//定时每秒执行
@@ -181,14 +179,15 @@ public class TimerTest {
     public void t7() {
         TimerExecutor executor = new TimerExecutor(1);
 
-        executor.add(TimerTask.by("A1", ScheduledCycle.of(1000 * 5), () -> {
+        executor.add(TimerTask.by("A1", ScheduledCycle.of(1000 * 5), (t) -> {
             try {
                 Thread.sleep(6);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             System.out.println("task do..");
-            return true;
+
+            t.setComplete(true);//通过标记控制任务结束
         }));
 
 

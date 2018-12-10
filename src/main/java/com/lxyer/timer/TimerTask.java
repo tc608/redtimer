@@ -64,8 +64,8 @@ public class TimerTask implements Task {
     }
 
     public void setComplete(boolean complete) {
-        isComplete = complete;
-        timerExecutor.remove(name);
+        if (isComplete = complete)
+            timerExecutor.remove(name);
     }
 
     public TimerExecutor getTimerExecutor() {
@@ -82,20 +82,16 @@ public class TimerTask implements Task {
 
     @Override
     public void run() {
-        //没有完成任务，继续执行，返回true,表示完成
+        //没有完成任务，继续执行
         if (!isComplete) {
             long start = System.currentTimeMillis();
-            StringBuilder buf = new StringBuilder();
-            buf.append("task [" + getName() + "] : ").append("not complete -> ");
-            long end;
-            if (!(isComplete = job.execute())) {
-                end = System.currentTimeMillis();
-                timerExecutor.add(this, true);
-            } else {
-                end = System.currentTimeMillis();
-            }
+            job.execute(this);
+            long end = System.currentTimeMillis();
+            logger.log(Level.INFO, String.format("task [%s] : not complete -> %s, time: %s ms", getName(), isComplete ? "had complete" : "not complete;", end - start));
 
-            logger.log(Level.INFO, buf.append(isComplete ? "had complete" : "not complete;").append("time: ").append(end - start).append(" ms").toString());
+            if (!isComplete) {
+                timerExecutor.add(this, true);
+            }
         }
 
     }

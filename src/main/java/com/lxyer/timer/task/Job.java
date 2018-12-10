@@ -8,12 +8,7 @@ public interface Job {
 
     /**
      * 任务执行的内容
-     * @return true:完成完成任务，false：未完成任务
      */
-    boolean execute();
-
-    /*default Job then(Job job) {
-        return job;
-    }*/
+    void execute(Task task);
 
 }
