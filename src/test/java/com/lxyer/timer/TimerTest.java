@@ -19,7 +19,7 @@ public class TimerTest {
     /**
      * 启动定时器测试，
      */
-    @Test
+    //@Test
     public void t2() throws InterruptedException {
         TimerExecutor timerExecutor = new TimerExecutor(1);
         //Task t1 = new TaskImpl("a1", new ScheduledExpres("1-40 * * * *"));//1-40，定时每分钟执行
@@ -49,7 +49,7 @@ public class TimerTest {
     /**
      * 测试给配置的时间 加1分钟
      */
-    @Test
+    //@Test
     public void t3(){
 
         // MM-dd HH:mm:ss
@@ -116,7 +116,7 @@ public class TimerTest {
     /**
      * 测试各种正则表达式的合法性
      */
-    @Test
+    //@Test
     public void t4(){
         //Pattern pattern = Pattern.compile();
         //Minute *  1,3  1-3  */5  3-15/5
@@ -139,7 +139,7 @@ public class TimerTest {
     /**
      * 测试配置的表达式
      */
-    @Test
+    //@Test
     public void t6(){
         //分 时 日 月 周
         TimerExecutor executor = new TimerExecutor(10);
@@ -175,7 +175,7 @@ public class TimerTest {
 
     }
 
-    @Test
+    //@Test
     public void t7() {
         TimerExecutor executor = new TimerExecutor(1);
 
