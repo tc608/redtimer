@@ -101,10 +101,6 @@ public class ScheduledExpres implements Scheduled{
         while (theTime.isBefore(now)){
             theTime = carry("m");
         }
-
-        System.out.println(cfg);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println("init:"+ sdf.format(this.theTime.toInstant(ZoneOffset.of("+8")).toEpochMilli()));
     }
 
     /**

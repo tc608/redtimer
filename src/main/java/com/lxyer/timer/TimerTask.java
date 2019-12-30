@@ -5,7 +5,8 @@ import com.lxyer.timer.task.Job;
 import com.lxyer.timer.task.Task;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,13 +40,13 @@ public class TimerTask implements Task {
     @Override
     public void setScheduled(Scheduled scheduled) {
         this.scheduled = scheduled;
-        this.theTime = scheduled.theTime().toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        this.theTime = Date.from(scheduled.theTime().atZone(ZoneId.systemDefault()).toInstant()).getTime();
     }
 
     @Override
     public long nextTime(){
         LocalDateTime next = scheduled.nextTime();
-        this.theTime = next.toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        this.theTime = Date.from(next.atZone(ZoneId.systemDefault()).toInstant()).getTime();
 
         /*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println("下次执行:"+ sdf.format(next.toInstant(ZoneOffset.of("+8")).toEpochMilli()));*/
@@ -54,7 +55,7 @@ public class TimerTask implements Task {
     @Override
     public long theTime(){
         LocalDateTime next = scheduled.theTime();
-        this.theTime = next.toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        this.theTime = Date.from(next.atZone(ZoneId.systemDefault()).toInstant()).getTime();
         return theTime;
     }
 
