@@ -1,7 +1,7 @@
-package com.lxyer.timer;
+package net.tccn.timer;
 
-import com.lxyer.timer.queue.TimerQueue;
-import com.lxyer.timer.task.Task;
+import net.tccn.timer.queue.TimerQueue;
+import net.tccn.timer.task.Task;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,7 +21,7 @@ public class TimerExecutor {
         start();
     }
 
-    public void add(Task ... task){
+    public void add(Task... task){
         for (Task t : task) {
             t.setTimerExecutor(this);
             queue.push(t);

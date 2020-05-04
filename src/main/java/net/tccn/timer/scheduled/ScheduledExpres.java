@@ -1,9 +1,7 @@
-package com.lxyer.timer.scheduled;
+package net.tccn.timer.scheduled;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

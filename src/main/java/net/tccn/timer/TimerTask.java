@@ -1,8 +1,8 @@
-package com.lxyer.timer;
+package net.tccn.timer;
 
-import com.lxyer.timer.scheduled.Scheduled;
-import com.lxyer.timer.task.Job;
-import com.lxyer.timer.task.Task;
+import net.tccn.timer.scheduled.Scheduled;
+import net.tccn.timer.task.Job;
+import net.tccn.timer.task.Task;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

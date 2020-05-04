@@ -1,8 +1,9 @@
-package com.lxyer.timer;
+package net.tccn.timer;
 
-import com.lxyer.timer.scheduled.ScheduledCycle;
-import com.lxyer.timer.scheduled.ScheduledExpres;
-import com.lxyer.timer.task.Task;
+import net.tccn.timer.scheduled.Scheduled;
+import net.tccn.timer.scheduled.ScheduledCycle;
+import net.tccn.timer.scheduled.ScheduledExpres;
+import net.tccn.timer.task.Task;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -41,8 +42,6 @@ public class TimerTest {
         }*/
 
 
-
-
         Thread.sleep(5000);
     }
 
@@ -50,7 +49,7 @@ public class TimerTest {
      * 测试给配置的时间 加1分钟
      */
     //@Test
-    public void t3(){
+    public void t3() {
 
         // MM-dd HH:mm:ss
         //0 2 * * *
@@ -67,46 +66,38 @@ public class TimerTest {
         //Minute *  1,3  1-3  */5  3-15/5  5
         String minute = ss[0];
 
-        if ("*".equals(minute)){//*
+        if ("*".equals(minute)) {//*
             next = start.plusMinutes(1);
-        } else if (minute.matches("^[0-5]??[0-9]??$")){//n
-            next = LocalDateTime.of(start.getYear(),
-                    start.getMonth(),
-                    start.getDayOfMonth(),
-                    start.getHour(),
-                    Integer.parseInt(minute));
-        }else if (minute.matches("^[*]/[0-9]+$")){// */5
-            next = start.plusMinutes(Integer.parseInt(minute.replace("*/","")));
-        }else if (minute.matches("^([0-5]??[0-9]??,)+([0-5]??[0-9]??)?  $")){//1,3
+        } else if (minute.matches("^[0-5]??[0-9]??$")) {//n
+            next = LocalDateTime.of(start.getYear(), start.getMonth(), start.getDayOfMonth(), start.getHour(), Integer.parseInt(minute));
+        } else if (minute.matches("^[*]/[0-9]+$")) {// */5
+            next = start.plusMinutes(Integer.parseInt(minute.replace("*/", "")));
+        } else if (minute.matches("^([0-5]??[0-9]??,)+([0-5]??[0-9]??)?  $")) {//1,3
             String[] minutes = minute.split(",");
-            int inx=0;
-            for (int i = 0; i < minutes.length-1; i++) {
-                if (start.getMinute() >= Integer.parseInt(minutes[i]) && start.getMinute()< Integer.parseInt(minutes[i+1])){
-                    inx = i+1;
+            int inx = 0;
+            for (int i = 0; i < minutes.length - 1; i++) {
+                if (start.getMinute() >= Integer.parseInt(minutes[i]) && start.getMinute() < Integer.parseInt(minutes[i + 1])) {
+                    inx = i + 1;
                 }
             }
-            next = LocalDateTime.of(start.getYear(),
-                    start.getMonth(),
-                    start.getDayOfMonth(),
-                    start.getHour(),
-                    Integer.parseInt(minutes[inx]));
-        }else if (minute.matches("^[0-5]??[0-9]??\\-[0-5]??[0-9]??$")){//1-3
+            next = LocalDateTime.of(start.getYear(), start.getMonth(), start.getDayOfMonth(), start.getHour(), Integer.parseInt(minutes[inx]));
+        } else if (minute.matches("^[0-5]??[0-9]??\\-[0-5]??[0-9]??$")) {//1-3
             int m = start.getMinute();
             String[] split = minute.split("-");
             int s = Integer.parseInt(split[0]);
             int e = Integer.parseInt(split[1]);
 
-            if (m < s || m > e){
+            if (m < s || m > e) {
                 m = s;
-            }else{
-                m = (m+1) < 60 ? (m+1) : 0;
+            } else {
+                m = (m + 1) < 60 ? (m + 1) : 0;
             }
             next = LocalDateTime.of(start.getYear(),
                     start.getMonth(),
                     start.getDayOfMonth(),
                     start.getHour(),
                     m);
-        }else if (minute.matches("^[0-5]??[0-9]??\\-[0-5]??[0-9]??/[0-5]??[0-9]??$")){//3-18/5
+        } else if (minute.matches("^[0-5]??[0-9]??\\-[0-5]??[0-9]??/[0-5]??[0-9]??$")) {//3-18/5
             //
         }
 
@@ -116,8 +107,8 @@ public class TimerTest {
     /**
      * 测试各种正则表达式的合法性
      */
-    //@Test
-    public void t4(){
+    @Test
+    public void t4() {
         //Pattern pattern = Pattern.compile();
         //Minute *  1,3  1-3  */5  3-15/5
 
@@ -127,51 +118,51 @@ public class TimerTest {
         //System.out.println("1-3".matches("^[0-5]??[0-9]??\\-[0-5]??[0-9]??$"));
         //System.out.println("3-18/5".matches("^[0-5]??[0-9]??\\-[0-5]??[0-9]??/[0-5]??[0-9]??$"));
 
-        String str = "01-05/5";// *  1,3  1-3  */5  3-15/5
-        System.out.println(str.matches("^[0-5]??[0-9]??$"));
-        System.out.println(str.matches("^[*]/[0-9]+$"));
-        System.out.println(str.matches("^([0-5]??[0-9]??,)+([0-5]??[0-9]??)?$"));
-        System.out.println(str.matches("^[0-5]??[0-9]??\\-[0-5]??[0-9]??$"));
-        System.out.println(str.matches("^[0-5]??[0-9]??\\-[0-5]??[0-9]??/[0-5]??[0-9]??$"));
+        //String str = "01-05/5";// *  1,3  1-3  */5  3-15/5
+        //System.out.println(str.matches("^[0-5]??[0-9]??$"));
+        //System.out.println(str.matches("^[*]/[0-9]+$"));
+        //System.out.println(str.matches("^([0-5]??[0-9]??,)+([0-5]??[0-9]??)?$"));
+        //System.out.println(str.matches("^[0-5]??[0-9]??\\-[0-5]??[0-9]??$"));
+        //System.out.println(str.matches("^[0-5]??[0-9]??\\-[0-5]??[0-9]??/[0-5]??[0-9]??$"));
 
+        System.out.println("111".matches("^[0-9]+.*[0-9]+$"));
     }
 
     /**
      * 测试配置的表达式
      */
-    //@Test
-    public void t6(){
+    @Test
+    public void t6() {
         //分 时 日 月 周
-        TimerExecutor executor = new TimerExecutor(10);
+        TimerExecutor timer = new TimerExecutor(3);
 
         /*
         08 18 * 7,8 4
         "task1", "1 22-23 * * 7"
          */
-        Task task = TimerTask.by("task1", ScheduledExpres.of("1 22-23 * * 7"), (t) -> {
-
-            //System.out.println("");
-
+        /*Task task = TimerTask.by("task1", ScheduledExpres.of("16-24 0-2 * * *"), t -> {
             System.out.println("----");
-            //System.out.println(new SimpleDateFormat("0: yyyy-MM-dd HH:mm:ss").format(theTime()));
-            //System.out.println(new SimpleDateFormat("1: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-            /*System.out.println(new SimpleDateFormat("2: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("3: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("4: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("5: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("6: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("7: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("8: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("9: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("10: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("11: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("12: yyyy-MM-dd HH:mm:ss").format(nextTime()));
-                System.out.println(new SimpleDateFormat("13: yyyy-MM-dd HH:mm:ss").format(nextTime()));*/
-
         });
+        timer.add(task);*/
+
+        timer.add(TimerTask.by("task2", ScheduledCycle.of("5s"), t -> {
+            System.out.println("task2 运行了。。。");
+
+            t.setScheduled(ScheduledCycle.of("15s"));
+            t.setComplete(true);
+        }));
+        timer.remove("task2");
+
+        /*
         task.run();
         task.setScheduled(ScheduledCycle.of(1000 * 5));//定时每秒执行
-        task.run();
+        task.run();*/
+
+        try {
+            Thread.sleep(1000 * 60 * 60);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -197,4 +188,30 @@ public class TimerTest {
             e.printStackTrace();
         }
     }
+
+    //@Test
+    public void t8() {
+        String str = "1M";
+        System.out.println();
+
+        Scheduled scheduled = null;
+
+        if (str.matches("^\\d+[y,M,d,H,m,s]$")) {
+            String endchar = str.substring(str.length() - 1);
+
+            long period = Long.parseLong(str.substring(0, str.length() - 1));
+
+            if ("y".equals(endchar)) scheduled = ScheduledCycle.of(period * 1000 * 60 * 60 * 24 * 365);
+            else if ("M".equals(endchar)) scheduled = ScheduledCycle.of(period * 1000 * 60 * 60 * 24 * 30);
+            else if ("d".equals(endchar)) scheduled = ScheduledCycle.of(period * 1000 * 60 * 60 * 24);
+            else if ("H".equals(endchar)) scheduled = ScheduledCycle.of(period * 1000 * 60 * 60);
+            else if ("m".equals(endchar)) scheduled = ScheduledCycle.of(period * 1000 * 60);
+            else if ("s".equals(endchar)) scheduled = ScheduledCycle.of(period * 1000);
+            else scheduled = ScheduledCycle.of(period);
+        } else {
+            scheduled = ScheduledExpres.of(str);
+        }
+    }
+
+
 }

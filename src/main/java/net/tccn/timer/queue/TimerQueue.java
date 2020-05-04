@@ -1,6 +1,6 @@
-package com.lxyer.timer.queue;
+package net.tccn.timer.queue;
 
-import com.lxyer.timer.task.Task;
+import net.tccn.timer.task.Task;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -20,8 +20,8 @@ public class TimerQueue{
      * @param task
      */
     public void push(Task task) {
-        remove(task.getName());
         synchronized (lock){
+            remove(task.getName());
             int inx = size;//目标坐标
             while (inx > 0 && queue[inx-1].theTime() > task.theTime()){
                 inx--;

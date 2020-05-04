@@ -1,7 +1,7 @@
-package com.lxyer.timer.task;
+package net.tccn.timer.task;
 
-import com.lxyer.timer.TimerExecutor;
-import com.lxyer.timer.scheduled.Scheduled;
+import net.tccn.timer.TimerExecutor;
+import net.tccn.timer.scheduled.Scheduled;
 
 /**
  * @author: liangxianyou at 2018/8/5 19:32.
