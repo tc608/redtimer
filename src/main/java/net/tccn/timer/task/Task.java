@@ -24,6 +24,7 @@ public interface Task extends Runnable {
 
     /**
      * 得到下一次执行计划的时间，并设置thenTime
+     *
      * @return
      */
     long nextTime();
@@ -37,18 +38,21 @@ public interface Task extends Runnable {
 
     /**
      * 是否完成
+     *
      * @return
      */
     boolean isComplete();
 
     /**
      * 完成任务(结束标记)
+     *
      * @param complete
      */
     void setComplete(boolean complete);
 
     /**
      * 开始时间（创建时间）
+     *
      * @return
      */
     long startTime();

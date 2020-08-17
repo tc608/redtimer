@@ -7,7 +7,6 @@ import net.tccn.timer.task.Task;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -44,7 +43,7 @@ public class TimerTask implements Task {
     }
 
     @Override
-    public long nextTime(){
+    public long nextTime() {
         LocalDateTime next = scheduled.nextTime();
         this.theTime = Date.from(next.atZone(ZoneId.systemDefault()).toInstant()).getTime();
 
@@ -52,8 +51,9 @@ public class TimerTask implements Task {
         System.out.println("下次执行:"+ sdf.format(next.toInstant(ZoneOffset.of("+8")).toEpochMilli()));*/
         return theTime;
     }
+
     @Override
-    public long theTime(){
+    public long theTime() {
         LocalDateTime next = scheduled.theTime();
         this.theTime = Date.from(next.atZone(ZoneId.systemDefault()).toInstant()).getTime();
         return theTime;

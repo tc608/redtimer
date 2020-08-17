@@ -20,7 +20,7 @@ public class TimerExecutor {
         start();
     }
 
-    public void add(Task... task){
+    public void add(Task... task) {
         for (Task t : task) {
             t.setTimerExecutor(this);
             queue.push(t);
@@ -28,24 +28,25 @@ public class TimerExecutor {
         }
     }
 
-    protected void add(Task task, boolean upTime){
+    protected void add(Task task, boolean upTime) {
         task.setTimerExecutor(this);
         if (upTime) task.nextTime();
         queue.push(task);
     }
 
-    public Task remove(String name){
+    public Task remove(String name) {
         return queue.remove(name);
     }
-    public Task get(String name){
+
+    public Task get(String name) {
         return queue.get(name);
     }
 
 
     public void start() {
-        new Thread(()->{
-            while (true){
-                try{
+        new Thread(() -> {
+            while (true) {
+                try {
                     Task take = null;
                     try {
                         take = queue.take();
@@ -56,7 +57,7 @@ public class TimerExecutor {
                     //执行调度
                     executor.execute(take);
                     //add(take, true); //继续添加任务到 队列
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
