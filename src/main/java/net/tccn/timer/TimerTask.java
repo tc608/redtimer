@@ -88,7 +88,7 @@ public class TimerTask implements Task {
             long start = System.currentTimeMillis();
             job.execute(this);
             long end = System.currentTimeMillis();
-            logger.log(Level.INFO, String.format("task [%s] : not complete -> %s, time: %s ms", getName(), isComplete ? "had complete" : "not complete;", end - start));
+            logger.finest(String.format("task [%s] : not complete -> %s, time: %s ms", getName(), isComplete ? "had complete" : "not complete;", end - start));
 
             if (!isComplete) {
                 timerExecutor.add(this, true);

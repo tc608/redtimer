@@ -4,7 +4,6 @@ import net.tccn.timer.scheduled.Scheduled;
 import net.tccn.timer.scheduled.ScheduledCycle;
 import net.tccn.timer.scheduled.ScheduledExpres;
 import net.tccn.timer.task.Task;
-import org.junit.Test;
 
 import java.time.LocalDateTime;
 
@@ -107,7 +106,7 @@ public class TimerTest {
     /**
      * 测试各种正则表达式的合法性
      */
-    @Test
+    //@Test
     public void t4() {
         //Pattern pattern = Pattern.compile();
         //Minute *  1,3  1-3  */5  3-15/5
@@ -131,7 +130,7 @@ public class TimerTest {
     /**
      * 测试配置的表达式
      */
-    @Test
+    //@Test
     public void t6() {
         //分 时 日 月 周
         TimerExecutor timer = new TimerExecutor(3);
