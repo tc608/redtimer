@@ -4,8 +4,15 @@ import net.tccn.timer.scheduled.Scheduled;
 import net.tccn.timer.scheduled.ScheduledCycle;
 import net.tccn.timer.scheduled.ScheduledExpres;
 import net.tccn.timer.task.Task;
+import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * t2 测试定时器加入任务的调度管理
@@ -212,5 +219,99 @@ public class TimerTest {
         }
     }
 
+    final ReentrantLock lock = new ReentrantLock();
+    List<Integer> list = new ArrayList<>();
+    Condition isEmpty = lock.newCondition();
+    //Condition conditionB = lock.newCondition();
+
+    //@Test
+    public void lockTest1() {
+
+        new Thread(() -> {
+            try {
+                /*while (!lock.tryLock(1, TimeUnit.SECONDS)) {
+                    conditionA.await();
+                }*/
+                lock.lock();
+
+                System.out.println("lock a");
+                Thread.sleep(10_000);
+                System.out.println("lock b");
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+                //conditionB.signal();
+            }
+        }).start();
+
+
+        new Thread(() -> {
+            try {
+                /*while (!lock.tryLock(1, TimeUnit.SECONDS)) {
+                    System.out.println(1);
+                    conditionB.await();
+                }*/
+                lock.lock();//dcf3w2
+
+                System.out.println("lock A");
+                Thread.sleep(10_000);
+                System.out.println("lock B");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+            }
+        }).start();
+
+        try {
+            Thread.sleep(22_000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    //@Test
+    public void lockTest2() {
+        new Thread(() -> {
+            try {
+                for (int i = 0; i < 10; i++) {
+                    lock.lock();
+                    list.add(i);
+                    isEmpty.signal();
+                    lock.unlock();
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        new Thread(() ->{
+            while (true) {
+                lock.lock();
+                if (list.isEmpty()) {
+                    try {
+                        isEmpty.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                System.out.println(list.remove(0));
+                lock.unlock();
+            }
+        }).start();
+
+        try {
+            Thread.sleep(20_000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

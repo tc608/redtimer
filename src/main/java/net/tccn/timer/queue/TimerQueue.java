@@ -2,17 +2,18 @@ package net.tccn.timer.queue;
 
 import net.tccn.timer.task.Task;
 
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by liangxianyou at 2018/7/23 14:07.
  */
 public class TimerQueue {
-    Object lock = new Object();
-    LinkedList<Task> queue = new LinkedList();
-    Set<String> names = new HashSet<>();
+    private ReentrantLock lock = new ReentrantLock();
+    private Condition isEmpty = lock.newCondition();
+    private LinkedList<Task> queue = new LinkedList();
 
     /**
      * 新加调度任务
@@ -20,7 +21,8 @@ public class TimerQueue {
      * @param task
      */
     public void push(Task task) {
-        synchronized (lock) {
+        try {
+            lock.lock();
             remove(task.getName());
             int inx = queue.size();//目标坐标
             while (inx > 0 && queue.get(inx).theTime() > task.theTime()) {
@@ -28,10 +30,9 @@ public class TimerQueue {
             }
 
             queue.add(inx, task);
-
-            //size++;
-            names.add(task.getName());
-            lock.notify();
+            isEmpty.signal();
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -42,9 +43,10 @@ public class TimerQueue {
      * @throws InterruptedException
      */
     public Task take() throws InterruptedException {
-        synchronized (lock) {
+        try {
+            lock.lock();
             while (queue.size() == 0) {
-                lock.wait(10);//循环避免非put线程唤醒空异常
+                isEmpty.await();
             }
 
             long currentTime = System.currentTimeMillis();
@@ -53,9 +55,11 @@ public class TimerQueue {
             if (currentTime >= nextTime) {
                 return queue.removeFirst();
             } else {
-                lock.wait(nextTime - currentTime);
+                isEmpty.await(nextTime - currentTime, TimeUnit.MILLISECONDS);
                 return take();
             }
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -80,11 +84,8 @@ public class TimerQueue {
     }
 
     private Task get(String name, boolean remove) {
-        synchronized (lock) {
-            if (!names.contains(name)) {
-                return null;
-            }
-
+        try {
+            lock.lock();
             Task take = null;
             for (int i = 0; i < queue.size(); i++) {
                 if (name.equals(queue.get(i).getName())) {
@@ -93,11 +94,12 @@ public class TimerQueue {
             }
             if (remove && take != null) {
                 queue.remove(take);
-                names.remove(take.getName());
             }
 
-            lock.notify();
+            isEmpty.signal();
             return take;
+        } finally {
+            lock.unlock();
         }
     }
 }
