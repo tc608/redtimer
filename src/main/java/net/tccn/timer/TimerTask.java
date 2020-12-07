@@ -39,7 +39,7 @@ public class TimerTask implements Task {
     @Override
     public void setScheduled(Scheduled scheduled) {
         this.scheduled = scheduled;
-        this.theTime = Date.from(scheduled.theTime().atZone(ZoneId.systemDefault()).toInstant()).getTime();
+        //this.theTime = Date.from(scheduled.theTime().atZone(ZoneId.systemDefault()).toInstant()).getTime();
     }
 
     @Override

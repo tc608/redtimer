@@ -112,6 +112,9 @@ public class ScheduledExpres implements Scheduled {
      */
     @Override
     public LocalDateTime nextTime() {
+        if (theTime.isAfter(LocalDateTime.now())) {
+            return theTime;
+        }
         return theTime = carry("m");
     }
 

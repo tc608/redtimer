@@ -25,7 +25,7 @@ public class TimerQueue {
             lock.lock();
             remove(task.getName());
             int inx = queue.size();//目标坐标
-            while (inx > 0 && queue.get(inx).theTime() > task.theTime()) {
+            while (inx > 0 && queue.get(inx - 1).theTime() > task.theTime()) {
                 inx--;
             }
 
