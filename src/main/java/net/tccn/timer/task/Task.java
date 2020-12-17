@@ -60,4 +60,10 @@ public interface Task extends Runnable {
     TimerExecutor getTimerExecutor();
 
     void setTimerExecutor(TimerExecutor timerExecutor);
+
+    /**
+     * 得到总执行次数
+     * @return
+     */
+    int getExecCount();
 }

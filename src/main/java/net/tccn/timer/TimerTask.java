@@ -7,6 +7,7 @@ import net.tccn.timer.task.Task;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 /**
@@ -15,6 +16,7 @@ import java.util.logging.Logger;
 public class TimerTask implements Task {
     private Logger logger = Logger.getLogger(this.getClass().getSimpleName());
     private long startTime = System.currentTimeMillis();
+    private AtomicInteger execCount = new AtomicInteger();
     protected String name;
     private long theTime;
     private Scheduled scheduled;
@@ -69,6 +71,10 @@ public class TimerTask implements Task {
             timerExecutor.remove(name);
     }
 
+    public int getExecCount() {
+        return execCount.get();
+    }
+
     public TimerExecutor getTimerExecutor() {
         return timerExecutor;
     }
@@ -85,10 +91,12 @@ public class TimerTask implements Task {
     public void run() {
         //没有完成任务，继续执行
         if (!isComplete) {
+            int count = execCount.incrementAndGet(); // 执行次数+1
+
             long start = System.currentTimeMillis();
             job.execute(this);
             long end = System.currentTimeMillis();
-            logger.finest(String.format("task [%s] : not complete -> %s, time: %s ms", getName(), isComplete ? "had complete" : "not complete;", end - start));
+            logger.finest(String.format("task [%s] : not complete -> %s, time: %s ms, exec count: %s.", getName(), isComplete ? "had complete" : "not complete", end - start, count));
 
             if (!isComplete) {
                 timerExecutor.add(this, true);
