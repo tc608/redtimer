@@ -1,18 +1,17 @@
-# redtimer
+# RedTimer
 
 #### 项目介绍
-redtimer是本人纯手工精心编写的一个任务定时调度器，全部代码均自己编写实现；
-功能包含**定时和时间解析**两部分功能；
-编写她的意图，用更少的代码满足自己的业务功能需求，让其他业务代码更佳的随心所欲；
+RedTimer 纯手工任务定时调度组件，无任何第三方依赖，全部代码均原创自己编写；
+用更少的代码，实现更加灵活易用的定时调度场景需求；
+功能包含**定时**和**时间表达式解析**两部分；
 
-为什么叫red，因为喜欢redkale，所以就加个red开头了，包括其他redbbs，可能以后更多redxxxx项目的产生，(也挺喜欢jfinal的，可能也会起个Jabc，开玩笑的);
 项目地址：[https://gitee.com/tc608/redtimer](https://gitee.com/tc608/redtimer)
 
-#### 软件架构
+#### 组件架构
 ![](http://img.1216.top/redbbs/20180811122309.png)
 
 
-#### 安装使用教程
+#### 使用教程
 ##### 创建启动定时任务
 ```
 TimerExecutor timer = new TimerExecutor(1);
@@ -56,7 +55,7 @@ ScheduledExpres.of("1-40 * * * *"); // 任务每小时的1-40每分钟执行
 task.setScheduled(ScheduledCycle.of(2000 * 1));
 timer.add(task);
 ```
-请看测试案例，以及阅读详细源码，所有的代码也就几百行；
+请看测试案例，或阅读详细源码，所有的代码也就几百行；
 
 #### 关于
 redbbs 交流群：527523235  
